@@ -32,6 +32,7 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
     remove() {
         const min = this.pq[1]
 
+        // 头尾值交换
         this.exch(1, this._size)
         this._size--
         this.pq.length = this._size + 1
@@ -41,16 +42,24 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
         return min
     }
 
+    /**
+     * 根据索引交换位置
+     * @param i 索引
+     * @param j 索引
+     */
     private exch(i: number, j: number) {
         const t = this.pq[i]
         this.pq[i] = this.pq[j]
         this.pq[j] = t
     }
 
+    /**
+     * 下沉操作
+     * @param k 
+     */
     private sink(k: number) {
         while (2 * k <= this._size) {
             let j = 2 * k
-            console.log(this.less)
             if (j + 1 <= this._size && this.less(j + 1, j)) j++
 
             if (this.less(k, j)) break
@@ -60,6 +69,10 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
         }
     }
 
+    /**
+     * 上浮
+     * @param k 
+     */
     private swim(k: number) {
         let j: number
         // console.log(this.less)
@@ -84,9 +97,9 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
 }
 
 class MedianFinder {
-    // 小顶堆，存放大于中位数的值 堆顶是小的 [空白, 4, 3, 2, 1]
+    // 小顶堆，存放大于中位数的值 堆顶是小的 [空白, 4, 5, 6, 8]
     private minPQ: PriorityQueue<number> = new PriorityQueue<number>()
-    // 大顶堆，存放小于中位数的值 堆顶是大的 [空白, 5, 8, 6, 10]
+    // 大顶堆，存放小于中位数的值 堆顶是大的 [空白, 3, 1, 2]
     private maxPQ: PriorityQueue<number> = new PriorityQueue<number>((a, b) => {
         return a > b
     })
@@ -111,11 +124,18 @@ class MedianFinder {
                 this.maxPQ.insert(v)
             }
         } else {
+            // 奇数情况下
+            // 取出小顶堆的最小值
             const min = this.minPQ.peek()
 
+            // 小顶堆为空 或者 小顶堆最小值 > 当前值，
             if (min === null || v < min) {
+                // 说明属于大顶堆
                 this.maxPQ.insert(v)
             } else {
+                // 如果 当前值 >= 小顶 ，那这个值肯定属于小顶堆，
+                // 此时需要移动小顶堆数据，以平衡大小堆数量，
+                // 就用小顶值(this.minPQ.remove())插入到大顶堆中，再把当前值给小顶堆
                 this.maxPQ.insert(this.minPQ.remove())
                 this.minPQ.insert(v)
             }
@@ -143,16 +163,6 @@ export default function finder() {
      * 及一个小顶堆，存放大于中位数的值。这会将所有元素大致分为两半，中间的两个元素位于两个堆的堆顶。这样一来，要找出中间值就是小事一桩。
      */
     const mf = new MedianFinder()
-    mf.addNum(1)
-    mf.addNum(2)
-    mf.addNum(3)
-    mf.addNum(4)
-    mf.addNum(5)
-    mf.addNum(6)
-    mf.addNum(8)
-    mf.addNum(10)
-    mf.addNum(11)
-    mf.addNum(9)
-    mf.addNum(7)
+    Array.from({length: 11}, (v, i) => i + 1).map((item, i) => mf.addNum(i))
     console.log(mf.findMedian())
 }
