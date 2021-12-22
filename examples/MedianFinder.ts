@@ -11,6 +11,7 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
         if (comparator) {
             console.log("----------------")
             this.less = (i: number, j: number) => {
+                console.log("comparator", this.pq)
                 return comparator(this.pq[i], this.pq[j])
             }
         }
@@ -25,16 +26,21 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
     }
 
     insert(e: E) {
+        // size自增，在堆尾部插入元素
         this.pq[++this._size] = e
+        // 执行上浮操作
         this.swim(this._size)
     }
 
+
     remove() {
+        // 取出根节点的值
         const min = this.pq[1]
 
-        // 头尾值交换
+        // 根节点和尾节点交换位置
         this.exch(1, this._size)
         this._size--
+        // 通过改变长度删除尾节点值
         this.pq.length = this._size + 1
 
         this.sink(1)
@@ -44,8 +50,8 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
 
     /**
      * 根据索引交换位置
-     * @param i 索引
-     * @param j 索引
+     * @param i
+     * @param j
      */
     private exch(i: number, j: number) {
         const t = this.pq[i]
@@ -70,19 +76,30 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
     }
 
     /**
-     * 上浮
-     * @param k 
+     * 上浮操作:从底部往上 循环执行
+     * @param k 最后一个节点的索引
      */
     private swim(k: number) {
         let j: number
-        // console.log(this.less)
+        // Math.floor(k / 2) 为 k的父节点索引值
+        // 如果k大于1 且 父节点大于子节点
         while (k > 1 && this.less(k, (j = Math.floor(k / 2)))) {
+            // 就调换父子节点位置
             this.exch(j, k)
+            // 换位置后，需要更新操作元素的索引
             k = j
         }
     }
 
+    /**
+     * 根据索引比较元素
+     * 
+     * @param i 节点索引
+     * @param j 节点索引
+     * @returns 
+     */
     private less(i: number, j: number): boolean {
+        console.log(this.pq)
         if (typeof this.pq[i] === 'string' || typeof this.pq[i] === 'number') {
             return this.pq[i] < this.pq[j]
         } else {
@@ -90,7 +107,7 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
         }
     }
 
-    // 返回堆内第二个值 ，因为第一个是空白
+    // 返回根节点值(数组内的第二个值，因为是从下标1开始的)
     peek(): null | E {
         return this.pq[1] ?? null
     }
@@ -140,8 +157,8 @@ class MedianFinder {
                 this.minPQ.insert(v)
             }
         }
-        console.log("大堆", this.maxPQ.pq)
-        console.log("小堆", this.minPQ.pq)
+        // console.log("大堆", this.maxPQ.pq)
+        // console.log("小堆", this.minPQ.pq)
     }
 
     findMedian(): number | null {
@@ -157,12 +174,36 @@ class MedianFinder {
     }
 }
 
+
+class Test<T extends number> {
+    private list: Array<number> = [1, 2, 3, 4, 5]
+    constructor(fn?: (i: T) => T) {
+        // 覆盖 getNum方法
+        if (fn) {
+            this.getNum = function (i: T) {
+                return this.list[fn(i)]
+            }
+        }
+    }
+
+    getNum = (i: T): number => {
+        return this.list[i]
+    }
+}
+
+
 export default function finder() {
+    // const t1 = new Test((i: number) => ++i)
+    // console.log(t1.getNum(1))
+    // const t2 = new Test()
+    // console.log(t2.getNum(1))
     /**
      * 使用两个优先级堆（priority heap），即一个大顶堆，存放小于中位数的值，以
      * 及一个小顶堆，存放大于中位数的值。这会将所有元素大致分为两半，中间的两个元素位于两个堆的堆顶。这样一来，要找出中间值就是小事一桩。
      */
     const mf = new MedianFinder()
-    Array.from({length: 11}, (v, i) => i + 1).map((item, i) => mf.addNum(i))
+    const heap = Array.from({length: 5}, (v, i) => i + 1)
+    heap.map((item, i) => mf.addNum(item))
+    console.log(`${heap}的中位数是：`)
     console.log(mf.findMedian())
 }
