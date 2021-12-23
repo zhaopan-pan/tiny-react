@@ -33,6 +33,10 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
     }
 
 
+    /**
+     * 删除
+     * @returns 
+     */
     remove() {
         // 取出根节点的值
         const min = this.pq[1]
