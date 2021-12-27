@@ -1,3 +1,33 @@
+结合上一篇的概念，用二叉堆实现优先队列的应用，也是帮助我们更容易理解Scheduler模块中优先级调度的相关代码
+
+## 题目1. 数据流的中位数
+
+中位数是有序列表中间的数。如果列表长度是偶数，中位数则是中间两个数的平均值。
+
+例如，
+
+[2, 3, 4] 的中位数是 3
+
+[2, 3] 的中位数是 (2 + 3) / 2 = 2.5
+
+设计一个支持以下两种操作的数据结构：
+
+void addNum(int num) - 从数据流中添加一个整数到数据结构中。
+double findMedian() - 返回目前所有元素的中位数。
+
+### 示例:
+
+```
+addNum(1)
+addNum(2)
+findMedian() -> 1.5
+addNum(3) 
+findMedian() -> 2
+```
+
+### 答案
+
+```ts
 interface Comparable<T> {
     compareTo(that: T): number
     equals(that: T): boolean
@@ -40,7 +70,6 @@ class PriorityQueue<E extends number | string | Comparable<E>> {
         // 执行上浮操作
         this.swim(this._size)
     }
-
 
     /**
      * 删除
@@ -219,8 +248,6 @@ class MedianFinder {
 
         if (size === 0) return null
 
-        console.log("大顶堆:\n", this.maxPQ.pq)
-        console.log("小顶堆:\n", this.minPQ.pq)
         // 偶数
         if (size % 2 === 0) {
             // 返回两个堆根节点的平均值
@@ -232,16 +259,16 @@ class MedianFinder {
     }
 }
 
-
 export default function finder() {
-    /**
-     * 使用两个优先级堆（priority heap），即一个大顶堆，存放小于中位数的值，以
-     * 及一个小顶堆，存放大于中位数的值。这会将所有元素大致分为两半，中间的两个元素位于两个堆的堆顶。这样一来，要找出中间值就是小事一桩。
-     */
     const mf = new MedianFinder()
     const heap = Array.from({length: 10}, (v, i) => i + 1)
-    // const heap = [1, 2, 3, 4, 5, 5, 5, 6, 7, 8, 9, 10]
-    console.log(heap)
     heap.map((item, i) => mf.addNum(item))
-    console.log(`${heap}的中位数是：`, mf.findMedian())
+    console.log(`${heap}的中位数是：`, mf.findMedian())  // 5.5
 }
+
+```
+
+### 解释
+
+使用两个优先级堆（priority heap），即一个大顶堆，存放小于中位数的值，以
+及一个小顶堆，存放大于中位数的值。这会将所有元素大致分为两半，中间的两个元素位于两个堆的堆顶。这样一来，要找出中间值就是小事一桩。
