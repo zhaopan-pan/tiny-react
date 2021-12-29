@@ -239,8 +239,8 @@ export default function finder() {
      * 及一个小顶堆，存放大于中位数的值。这会将所有元素大致分为两半，中间的两个元素位于两个堆的堆顶。这样一来，要找出中间值就是小事一桩。
      */
     const mf = new MedianFinder()
-    const heap = Array.from({length: 10}, (v, i) => i + 1)
-    // const heap = [1, 2, 3, 4, 5, 5, 5, 6, 7, 8, 9, 10]
+    // const heap = Array.from({length: 10}, (v, i) => i + 1)
+    const heap = [1, 2, 3, 4, 5, 6,]
     console.log(heap)
     heap.map((item, i) => mf.addNum(item))
     console.log(`${heap}的中位数是：`, mf.findMedian())

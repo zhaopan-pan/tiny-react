@@ -8,6 +8,10 @@ import {TodoList} from './TodoList'
 import {ChildrenReconcilerDemo} from './ChildrenReconciler'
 import {MemorizedComponentDemo} from './MemorizedComponent'
 import MedianFinder from './MedianFinder'
+import dfs from './dfs'
+import minHeapSort from './minHeapSort'
+// dfs()
+minHeapSort()
 MedianFinder()
 createRoot(document.querySelector('#app')!).render(<MemorizedComponentDemo />)
 // createRoot(document.querySelector('#app')!).render(<TodoList />)
