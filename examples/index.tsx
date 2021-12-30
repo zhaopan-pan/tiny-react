@@ -10,7 +10,9 @@ import {MemorizedComponentDemo} from './MemorizedComponent'
 import MedianFinder from './MedianFinder'
 import dfs from './dfs'
 import minHeapSort from './minHeapSort'
+import heapSort from './heapSort'
 // dfs()
+heapSort()
 minHeapSort()
 MedianFinder()
 createRoot(document.querySelector('#app')!).render(<MemorizedComponentDemo />)
