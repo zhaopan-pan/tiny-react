@@ -1,12 +1,12 @@
+有个上一篇的二叉堆前置知识，趁热打铁顺便温习一下堆排序
 
-
+```js
 // 交换两个节点
 function swap(A: number[], i: number, j: number) {
     let temp = A[i]
     A[i] = A[j]
     A[j] = temp
 }
-
 
 /**
  * 比较移动操作
@@ -71,7 +71,7 @@ function startSort(arr: number[], compareTo: (l: number, r: number) => Boolean) 
  * @param a 需要排序的数据
  * @param compare 比较方法，决定升降循序
  */
-function heapSortFn(a: number[], compare?: (l: number, r: number) => Boolean) {
+function heapSortFn(a: number[], compare ? : (l: number, r: number) => Boolean) {
     // 默认降序，可以自定义成升序
     const compareTo = compare ? compare : (l: number, r: number) => l > r
     const arr = a
@@ -81,15 +81,23 @@ function heapSortFn(a: number[], compare?: (l: number, r: number) => Boolean) {
     startSort(arr, compareTo)
 }
 
-// 此处以升序为例：
-// 将初始二叉树转化为大顶堆（heapify）:实质是从第一个非叶子结点开始，从下至上，从右至左，对每一个非叶子结点做shiftDown操作
-// 【重点】:此时根结点为最大值，将其与最后一个结点交换
-// 除开最后一个结点，将其余节点组成的新堆转化为大顶堆，此时根结点为次最大值，将其与最后一个结点交换。
-// 重复步骤2，直到堆中元素个数为1（或其对应数组的长度为1），排序完成。
 export default function heapSort() {
-    var arr1 = [5, 8, 0, 10, 4, 6, 1]
+    let arr1 = [5, 8, 0, 10, 4, 6, 1]
     heapSortFn(arr1)
-    console.log("降序:", arr1)  //[10, 8, 6, 5, 4, 1, 0]
+    console.log("降序:", arr1) //[10, 8, 6, 5, 4, 1, 0]
     heapSortFn(arr1, (i: number, j: number) => i < j)
-    console.log("升序:", arr1)  // [0, 1, 4, 5, 6, 8, 10]
+    console.log("升序:", arr1) // [0, 1, 4, 5, 6, 8, 10]
 }
+```
+
+### 复杂度分析
+
+主要围绕 `shiftDown` 函数分析， `shiftDown` 本身是在重建堆, 执行的次数是由完全二叉树的深度决定的, 由完全二叉树的性质可知 `n` 个节点的话深度为 `[log2n]+1` ，从 `i = 2 * i + 1` 也可以看出，所以 `shiftDown` 的复杂度为 `O(logN)` ; 它的外层循环次数都是n次，复杂度是 `O(n)` ; 所以最终复杂度是 `O(nlogN)`
+
+### 总结
+
+堆排是一种选择排序，此处以升序为例：
+1、将初始二叉树转化为大顶堆: 实际上是从第一个非叶子结点开始，从下至上，从右至左，对每一个非叶子结点做shiftDown操作
+2、【重点】: 此时根结点为最大值，将其与最后一个结点交换
+3、除开最后一个结点，将其余节点组成的新堆转化为大顶堆，此时根结点为次最大值，将其与最后一个结点交换
+4、重复步骤2、3，直到堆中元素个数为1（或其对应数组的长度为1），排序完成

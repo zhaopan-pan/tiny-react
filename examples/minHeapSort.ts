@@ -1,4 +1,3 @@
-import {start} from 'repl'
 
 const minHeapSort = (arr: any[]) => {
     // 1. 构造最小堆
@@ -59,8 +58,8 @@ const siftDown = (arr: any[], startIndex: number, endIndex: number) => {
 
 export default function minHeapSortFn() {
     var arr1 = [5, 8, 0, 10, 4, 6, 1]
-    // minHeapSort(arr1)
-    // console.log(arr1) // [10, 8, 6, 5,4, 1, 0]
+    minHeapSort(arr1)
+    console.log("minHeapSort:", arr1) // [10, 8, 6, 5,4, 1, 0]
     // var arr2 = [5]
     // minHeapSort(arr2)
     // console.log(arr2) // [ 5 ]
