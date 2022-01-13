@@ -1,14 +1,14 @@
-import { REACT_ELEMENT_TYPE } from '../shared/ReactSymbols'
-import { ReactElement } from '../shared/ReactTypes'
+import {REACT_ELEMENT_TYPE} from '../shared/ReactSymbols'
+import {ReactElement} from '../shared/ReactTypes'
 import {
   createFiberFromElement,
   createFiberFromText,
   createWorkInProgress,
 } from './ReactFiber'
-import { ChildDeletion, Placement } from './ReactFiberFlags'
-import { Lanes } from './ReactFiberLane'
-import { Fiber } from './ReactInternalTypes'
-import { HostText } from './ReactWorkTags'
+import {ChildDeletion, Placement} from './ReactFiberFlags'
+import {Lanes} from './ReactFiberLane'
+import {Fiber} from './ReactInternalTypes'
+import {HostText} from './ReactWorkTags'
 
 const isArray = Array.isArray
 
@@ -52,8 +52,13 @@ const ChildReconciler = (shouldTrackSideEffects: boolean) => {
     const key = element.key
     let child = currentFirstChild
 
+    // 首先判断是否存在对应DOM节点
     while (child !== null) {
+      // 上一次更新存在DOM节点，接下来判断是否可复用
+
+      // 首先比较key是否相同
       if (child.key === key) {
+        // key相同，接下来比较type是否相同
         if (child.elementType === element.type) {
           deleteRemainingChildren(returnFiber, child.sibling)
           const existing = useFiber(child, element.props)
